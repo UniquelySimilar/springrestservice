@@ -1,6 +1,5 @@
 package com.tcoveney.springrestservice.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -22,22 +21,11 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
     }
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Customer> findAll() {
 		Session session = sessionFactory.getCurrentSession();
 		
-		Customer customer1 = new Customer();
-		customer1.setId(1);
-		customer1.setName("Customer1");
-
-		Customer customer2 = new Customer();
-		customer2.setId(2);
-		customer2.setName("Customer2");
-		
-		ArrayList<Customer> customers = new ArrayList<Customer>();
-		customers.add(customer1);
-		customers.add(customer2);
-		
-		return customers;
+		return session.createQuery("from Customer").setMaxResults(50).list();
 	}
 
 	@Override

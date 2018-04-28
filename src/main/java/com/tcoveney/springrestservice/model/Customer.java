@@ -2,17 +2,44 @@ package com.tcoveney.springrestservice.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+@Entity
+@Table(name = "customers")
 public class Customer {
+	// NOTE: The default GeneratedValue strategy is AUTO, which for MySQL AUTO_INCREMENT is IDENTITY
+	// so the strategy does not need to be specified here
+	@Id @GeneratedValue
+	@Column(name = "id")
 	private int id;
+	
 	private String name;
 	private String street;
 	private String city;
 	private String state;
 	private String zipcode;
+
+	@Column(name = "home_phone")
 	private String homePhone;
+	
+	@Column(name = "work_phone")
 	private String workPhone;
+	
 	private String email;
+	
+	@Column(name = "created_at")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+	
+	@Column(name = "updated_at")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedAt;
 	
 	public int getId() {
