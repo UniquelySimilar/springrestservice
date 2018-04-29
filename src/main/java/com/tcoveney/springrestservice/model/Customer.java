@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -14,9 +15,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "customers")
 public class Customer {
-	// NOTE: The default GeneratedValue strategy is AUTO, which for MySQL AUTO_INCREMENT is IDENTITY
-	// so the strategy does not need to be specified here
-	@Id @GeneratedValue
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 	

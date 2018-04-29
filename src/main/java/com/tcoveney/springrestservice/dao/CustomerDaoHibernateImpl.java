@@ -2,6 +2,9 @@ package com.tcoveney.springrestservice.dao;
 
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +33,16 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 
 	@Override
 	public Customer find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = sessionFactory.getCurrentSession();
+				
+		return session.find(Customer.class, id);
 	}
 
 	@Override
 	public int insert(Customer customer) {
-		// TODO Auto-generated method stub
-		return 0;
+		Session session = sessionFactory.getCurrentSession();
+		
+		return (Integer)session.save(customer);
 	}
 
 	@Override
@@ -51,11 +56,4 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	public void truncateCustomerTable() {
-		// TODO Auto-generated method stub
-
-	}
-
 }
