@@ -36,10 +36,6 @@
 
 	<context:property-placeholder location="classpath:jdbc.properties" />
 
-	<!-- Hibernate implementation Commented out @Repository annotation in JDBC 
-		CustomerDaoImpl class Commented out @RestController annotation in CustomerApiController 
-		causing deployment error -->
-
 	<bean id="hibernateSessionFactory"
 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="myDataSource" />

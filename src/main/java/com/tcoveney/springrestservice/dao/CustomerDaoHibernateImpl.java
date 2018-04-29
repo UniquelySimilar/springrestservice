@@ -26,7 +26,7 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 	public List<Customer> findAll() {
 		Session session = sessionFactory.getCurrentSession();
 		
-		return session.createQuery("from Customer").setMaxResults(50).list();
+		return session.createQuery("from Customer").list();
 	}
 
 	@Override
@@ -54,7 +54,10 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 
 	@Override
 	public void delete(int id) {
-		// TODO Auto-generated method stub
-
+		Session session = sessionFactory.getCurrentSession();
+		
+		Customer customer = new Customer();
+		customer.setId(id);
+		session.delete(customer);
 	}
 }
