@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -43,6 +44,12 @@ public class CustomerApiController {
 	public void store(@RequestBody Customer customer, HttpServletRequest request, HttpServletResponse response) {
 		int newCustomerId = customerDao.insert(customer);
 		response.addHeader( "Location", request.getRequestURL().append( Integer.toString(newCustomerId) ).toString() );
+	}
+	
+	@PutMapping("/")
+	@ResponseStatus(HttpStatus.OK)
+	public Customer update(@RequestBody Customer customer, HttpServletRequest request, HttpServletResponse response) {
+		return customerDao.update(customer);
 	}
 
 }

@@ -1,9 +1,7 @@
 package com.tcoveney.springrestservice.dao;
 
+import java.util.Date;
 import java.util.List;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -46,9 +44,12 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 	}
 
 	@Override
-	public void update(Customer customer) {
-		// TODO Auto-generated method stub
-
+	public Customer update(Customer customer) {
+		Session session = sessionFactory.getCurrentSession();
+		
+		customer.setUpdatedAt(new Date());
+		
+		return (Customer)session.merge(customer);
 	}
 
 	@Override

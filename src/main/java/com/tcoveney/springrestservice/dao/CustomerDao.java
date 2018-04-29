@@ -8,6 +8,6 @@ public interface CustomerDao {
 	public List<Customer> findAll();
 	public Customer find(int id);
 	public int insert(Customer customer);
-	public void update(Customer customer);
+	public Customer update(Customer customer);
 	public void delete(int id);
 }
