@@ -1,5 +1,6 @@
 package com.tcoveney.springrestservice.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tcoveney.springrestservice.dao.CustomerDao;
 import com.tcoveney.springrestservice.model.Customer;
 import com.tcoveney.springrestservice.validator.CustomerValidator;
@@ -66,11 +70,24 @@ public class CustomerApiController {
 		if (result.hasErrors()) {
 			response.setStatus(400);
 			//logger.debug(result.getAllErrors());
+	        ObjectMapper mapper = new ObjectMapper();
+	        ArrayNode arrayNode = mapper.createArrayNode();
+
 			for(FieldError fieldError : result.getFieldErrors()){
+		        ObjectNode objectNode = mapper.createObjectNode();
 				String message = messageSource.getMessage(fieldError.getCodes()[0], null, Locale.US);
-				logger.debug(fieldError.getField() + ": " + message);
+		        objectNode.put(fieldError.getField(), message);
+		        arrayNode.add(objectNode);
+				//logger.debug(fieldError.getField() + ": " + message);
 			}
-			// TODO: Add errors list to response as JSON
+			// Add errors list to response as JSON
+			try {
+				response.getWriter().write(arrayNode.toString());
+				response.getWriter().flush();
+			}
+			catch(IOException ioe) {
+				// TODO: return error code
+			}
 		}
 		else {
 			int newCustomerId = customerDao.insert(customer);
@@ -80,7 +97,6 @@ public class CustomerApiController {
 	}
 	
 	@PutMapping("/")
-	@ResponseStatus(HttpStatus.OK)
 	public Customer update(@RequestBody @Validated Customer customer, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
 		if (result.hasErrors()) {
 			
@@ -90,7 +106,6 @@ public class CustomerApiController {
 	}
 	
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable int id) {
 		customerDao.delete(id);
 	}
