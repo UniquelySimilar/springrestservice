@@ -66,28 +66,9 @@ public class CustomerApiController {
 	}
 	
 	@PostMapping("/")
-	public void store(@RequestBody @Validated Customer customer, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
-		if (result.hasErrors()) {
-			response.setStatus(400);
-			//logger.debug(result.getAllErrors());
-	        ObjectMapper mapper = new ObjectMapper();
-	        ArrayNode arrayNode = mapper.createArrayNode();
-
-			for(FieldError fieldError : result.getFieldErrors()){
-		        ObjectNode objectNode = mapper.createObjectNode();
-				String message = messageSource.getMessage(fieldError.getCodes()[0], null, Locale.US);
-		        objectNode.put(fieldError.getField(), message);
-		        arrayNode.add(objectNode);
-				//logger.debug(fieldError.getField() + ": " + message);
-			}
-			// Add errors list to response as JSON
-			try {
-				response.getWriter().write(arrayNode.toString());
-				response.getWriter().flush();
-			}
-			catch(IOException ioe) {
-				// TODO: return error code
-			}
+	public void store(@RequestBody @Validated Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+		if (bindingResult.hasErrors()) {
+			processValidationErrors(bindingResult, response);
 		}
 		else {
 			int newCustomerId = customerDao.insert(customer);
@@ -97,17 +78,41 @@ public class CustomerApiController {
 	}
 	
 	@PutMapping("/")
-	public Customer update(@RequestBody @Validated Customer customer, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
-		if (result.hasErrors()) {
-			
+	public void update(@RequestBody @Validated Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+		if (bindingResult.hasErrors()) {
+			processValidationErrors(bindingResult, response);
 		}
-		
-		return customerDao.update(customer);
+		else {
+			customerDao.update(customer);
+		}
 	}
 	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable int id) {
 		customerDao.delete(id);
+	}
+	
+	private void processValidationErrors(BindingResult bindingResult, HttpServletResponse response) {
+		response.setStatus(400);
+		//logger.debug(result.getAllErrors());
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode arrayNode = mapper.createArrayNode();
+
+		for(FieldError fieldError : bindingResult.getFieldErrors()){
+	        ObjectNode objectNode = mapper.createObjectNode();
+			String message = messageSource.getMessage(fieldError.getCodes()[0], null, Locale.US);
+	        objectNode.put(fieldError.getField(), message);
+	        arrayNode.add(objectNode);
+			//logger.debug(fieldError.getField() + ": " + message);
+		}
+		// Add errors list to response as JSON
+		try {
+			response.getWriter().write(arrayNode.toString());
+			response.getWriter().flush();
+		}
+		catch(IOException ioe) {
+			logger.error("Error writing to response", ioe);
+		}
 	}
 
 }
