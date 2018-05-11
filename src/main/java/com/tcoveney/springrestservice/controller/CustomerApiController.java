@@ -101,7 +101,8 @@ public class CustomerApiController {
 		for(FieldError fieldError : bindingResult.getFieldErrors()){
 	        ObjectNode objectNode = mapper.createObjectNode();
 			String message = messageSource.getMessage(fieldError.getCodes()[0], null, Locale.US);
-	        objectNode.put(fieldError.getField(), message);
+	        objectNode.put("field", fieldError.getField());
+	        objectNode.put("message", message);
 	        arrayNode.add(objectNode);
 			//logger.debug(fieldError.getField() + ": " + message);
 		}
