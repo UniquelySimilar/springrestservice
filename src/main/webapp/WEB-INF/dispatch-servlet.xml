@@ -14,8 +14,6 @@
         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
 	<context:component-scan base-package="com.tcoveney" />
-
-	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<mvc:annotation-driven />
 
 	<bean id="jspViewResolver"
