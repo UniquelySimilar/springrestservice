@@ -37,7 +37,9 @@ import com.tcoveney.springrestservice.validator.CustomerValidator;
 
 @RestController
 @RequestMapping("/api/customer")
-@CrossOrigin(origins = "http://localhost:9000")
+// "http://localhost:9000" - vue cli dev server
+// "http://vue-client-for-spring-rest.localhost" - Apache2 virtualhost for vue client
+@CrossOrigin(origins = {"http://localhost:9000", "http://vue-client-for-spring-rest.localhost"})
 public class CustomerApiController {
 	private static final Logger logger = LogManager.getLogger(CustomerApiController.class);
 	
