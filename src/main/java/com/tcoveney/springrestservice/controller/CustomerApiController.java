@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.javafaker.Faker;
 import com.tcoveney.springrestservice.dao.CustomerDao;
 import com.tcoveney.springrestservice.model.Customer;
 import com.tcoveney.springrestservice.validator.CustomerValidator;
@@ -115,6 +116,35 @@ public class CustomerApiController {
 		}
 		catch(IOException ioe) {
 			logger.error("Error writing to response", ioe);
+		}
+	}
+	
+	@GetMapping("/populate")
+	public void populateCustomers() {
+		// NOTE: Creating specific dao 'count' method not needed since this method will not be used often
+		List<Customer> customers = customerDao.findAll();
+		if (customers.size() > 0) {
+			logger.warn("DB table 'customers' already contains " + customers.size() + " records.  Truncate table if want to repopulate.");
+			return;
+		}
+		
+		Faker faker = new Faker(new Locale("en-US"));
+		Customer customer = new Customer();
+		
+		for(int i = 0; i < 1000; i++) {
+			String firstName = faker.name().firstName();
+			String lastName = faker.name().lastName();
+			String email = firstName + "." + lastName + "@example.com";
+			customer.setFirstName(firstName);
+			customer.setLastName(lastName);
+			customer.setStreet(faker.address().streetAddress());
+			customer.setCity(faker.address().city());
+			customer.setState(faker.address().state());
+			customer.setZipcode(faker.address().zipCode());
+			customer.setHomePhone("303-555-1212");
+			customer.setEmail(email);
+			
+			this.customerDao.insert(customer);
 		}
 	}
 
