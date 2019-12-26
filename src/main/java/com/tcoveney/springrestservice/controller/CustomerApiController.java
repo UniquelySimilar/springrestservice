@@ -97,6 +97,7 @@ public class CustomerApiController {
 	
 	private void processValidationErrors(BindingResult bindingResult, HttpServletResponse response) {
 		response.setStatus(400);
+		response.setContentType("application/json");
 		//logger.debug(result.getAllErrors());
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode arrayNode = mapper.createArrayNode();
