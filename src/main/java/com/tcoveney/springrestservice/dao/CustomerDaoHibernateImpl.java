@@ -33,7 +33,7 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 	public Customer find(int id) {
 		Session session = sessionFactory.getCurrentSession();
 				
-		return session.find(Customer.class, id);
+		return session.get(Customer.class, id);
 	}
 
 	@Override
