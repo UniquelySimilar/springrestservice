@@ -1,23 +1,26 @@
 package com.tcoveney.springrestservice.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 
 @Entity
 @Table(name = "customers")
 public class Customer {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 	
 	@Column(name = "first_name")
 	private String firstName;
@@ -38,7 +41,7 @@ public class Customer {
 	
 	private String email;
 	
-	@Column(name = "created_at")
+	@Column(name = "created_at", updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 	
@@ -46,11 +49,20 @@ public class Customer {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedAt;
 	
-	public int getId() {
+	// REFERENCE: https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Order> orders = new ArrayList<>();
+	
+	public void addOrder(Order order) {
+		orders.add(order);
+		order.setCustomer(this);
+	}
+	
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
