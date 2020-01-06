@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -19,9 +20,11 @@ public class Order {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-	
-	@Column(name = "customer_id")
-	private Integer customerId;
+
+	// REFERENCE: https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id", nullable = false)
+	private Customer customer;
 	
 	@Column(name = "order_status")
 	private int orderStatus;
@@ -42,11 +45,6 @@ public class Order {
 	@Column(name = "updated_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private java.util.Date updatedAt;
-	
-
-	// REFERENCE: https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Customer customer;
 	
     @Override
     public boolean equals(Object object) {
@@ -75,14 +73,6 @@ public class Order {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(Integer customerId) {
-		this.customerId = customerId;
 	}
 
 	public int getOrderStatus() {
@@ -117,26 +107,26 @@ public class Order {
 		this.shippedDate = shippedDate;
 	}
 
-	public Date getCreatedAt() {
+	public java.util.Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(java.util.Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt() {
+	public java.util.Date getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(java.util.Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", customerId=" + customerId + ", orderStatus=" + orderStatus + ", orderDate="
-				+ orderDate + ", requiredDate=" + requiredDate + ", shippedDate=" + shippedDate + ", createdAt="
+		return "Order [id=" + id + ", orderStatus=" + orderStatus + ", orderDate=" + orderDate 
+				+ ", requiredDate=" + requiredDate + ", shippedDate=" + shippedDate + ", createdAt="
 				+ createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 
