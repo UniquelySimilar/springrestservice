@@ -58,6 +58,11 @@ public class Customer {
 		order.setCustomer(this);
 	}
 	
+	public void removeOrder(Order order) {
+		orders.remove(order);
+		order.setCustomer(null);
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -152,6 +157,10 @@ public class Customer {
 	
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+	
+	public List<Order> getOrders() {
+		return orders;
 	}
 
 	@Override
