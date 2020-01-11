@@ -36,11 +36,11 @@ public class OrderDaoHibernateImpl implements OrderDao {
 	}
 
 	@Override
-	public void insert(Order order) {
+	public int insert(Order order) {
 		Session session = sessionFactory.getCurrentSession();
 		
 		// NOTE: If I need the new order ID value, then call 'save()' instead
-		session.persist(order);
+		return (Integer)session.save(order);
 	}
 
 	@Override

@@ -68,6 +68,11 @@ public class CustomerController {
 		return customerDao.find(id);
 	}
 	
+	@GetMapping("/lastname/{lastName}")
+	public List<Customer> findByLastName(@PathVariable String lastName) {
+		return customerDao.findByLastName(lastName);
+	}
+	
 	@PostMapping("/")
 	public void store(@RequestBody @Validated Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {

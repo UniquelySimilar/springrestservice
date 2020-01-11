@@ -44,6 +44,15 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public List<Customer> findByLastName(String lastName) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Customer where lastName = :last_name";
+		
+		return session.createQuery(hql).setParameter("last_name", lastName).list();
+	}
+
+	@Override
 	public int insert(Customer customer) {
 		Session session = sessionFactory.getCurrentSession();
 		
