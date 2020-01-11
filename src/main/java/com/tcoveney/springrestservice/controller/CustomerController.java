@@ -37,7 +37,7 @@ import com.tcoveney.springrestservice.model.Customer;
 import com.tcoveney.springrestservice.validator.CustomerValidator;
 
 @RestController
-@RequestMapping("/api/customer")
+@RequestMapping("/api/customers")
 // "http://localhost:9000" - vue cli dev server
 // "http://vue-client-for-spring-rest.localhost" - Apache2 virtualhost for vue client
 @CrossOrigin(origins = {"http://localhost:9000", "http://vue-client-for-spring-rest.localhost"})

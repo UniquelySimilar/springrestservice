@@ -5,9 +5,13 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tcoveney.springrestservice.model.Order;
 
+@Repository
+@Transactional
 public class OrderDaoHibernateImpl implements OrderDao {
 	private SessionFactory sessionFactory;
 
