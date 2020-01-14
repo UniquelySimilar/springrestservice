@@ -36,9 +36,9 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 	@Override
 	public Customer find(int id) {
 		Session session = sessionFactory.getCurrentSession();
-		Customer customer = session.get(Customer.class, id);
-		// Load associated orders (lazy loaded)
-		customer.getOrders().size();
+		// Get customer and associated orders (lazy loaded) with one query
+		String hql = "from Customer as customer inner join fetch customer.orders where customer.id = :id";
+		Customer customer = (Customer)session.createQuery(hql).setParameter("id", id).getSingleResult();
 		
 		return customer;
 	}

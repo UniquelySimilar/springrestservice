@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tcoveney.springrestservice.dao.CustomerDao;
 import com.tcoveney.springrestservice.dao.OrderDao;
+import com.tcoveney.springrestservice.model.Customer;
 import com.tcoveney.springrestservice.model.Order;
 
 @RestController
@@ -34,6 +36,9 @@ public class OrderController {
 	@Autowired
 	private OrderDao orderDao;
 	
+	@Autowired
+	private CustomerDao customerDao;
+	
 	// TODO: Create OrderValidator or use JSR-303 annotations in model
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -46,10 +51,13 @@ public class OrderController {
 	}
 	
 	@PostMapping("/customers/{customerId}/orders")
-	public void store(@RequestBody Order order, HttpServletRequest request, HttpServletResponse response) {
-		int newOrderId = orderDao.insert(order);
+	public void store(@PathVariable int customerId, @RequestBody Order order, HttpServletRequest request, HttpServletResponse response) {
+		//int newOrderId = orderDao.insert(order);
+		Customer customer = customerDao.find(customerId);
+		customer.addOrder(order);
+		customerDao.update(customer);
 		response.setStatus(201);
-		response.addHeader( "Location", request.getRequestURL().append( Integer.toString(newOrderId) ).toString() );
+		//response.addHeader( "Location", request.getRequestURL().append( Integer.toString(newOrderId) ).toString() );
 	}
 
 }
