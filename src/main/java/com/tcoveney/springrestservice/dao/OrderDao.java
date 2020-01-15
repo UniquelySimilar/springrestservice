@@ -8,6 +8,6 @@ public interface OrderDao {
 	public List<Order> findAll();
 	public Order find(int id);
 	public int insert(Order order);
-	public Order update(Order order);
+	public Order update(int customerId, Order order);
 	public void delete(int id);
 }

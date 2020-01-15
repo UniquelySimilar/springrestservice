@@ -128,9 +128,17 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", orderStatus=" + orderStatus + ", orderDate=" + orderDate 
+		String retVal = "Order [id=" + id + ", orderStatus=" + orderStatus + ", orderDate=" + orderDate 
 				+ ", requiredDate=" + requiredDate + ", shippedDate=" + shippedDate + ", createdAt="
 				+ createdAt + ", updatedAt=" + updatedAt + "]";
+		if (null != null) {
+			retVal += " *** " + customer.toString();
+		}
+		else {
+			retVal += " *** " + " customer property is NULL";
+		}
+		
+		return retVal;
 	}
 
 }

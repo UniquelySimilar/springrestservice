@@ -7,12 +7,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,13 +54,27 @@ public class OrderController {
 	}
 	
 	@PostMapping("/customers/{customerId}/orders")
-	public void store(@PathVariable int customerId, @RequestBody Order order, HttpServletRequest request, HttpServletResponse response) {
-		//int newOrderId = orderDao.insert(order);
-		Customer customer = customerDao.find(customerId);
-		customer.addOrder(order);
-		customerDao.update(customer);
-		response.setStatus(201);
-		//response.addHeader( "Location", request.getRequestURL().append( Integer.toString(newOrderId) ).toString() );
+	public void store(@PathVariable int customerId, @RequestBody @Validated Order order, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+		if (bindingResult.hasErrors()) {
+			// TODO: Implement
+		}
+		else {
+			Customer customer = customerDao.find(customerId);
+			customer.addOrder(order);
+			customerDao.update(customer);
+			response.setStatus(201);
+			//response.addHeader( "Location", request.getRequestURL().append( Integer.toString(newOrderId) ).toString() );
+		}
+	}
+	
+	@PutMapping("/customers/{customerId}/orders")
+	public void update(@PathVariable int customerId, @RequestBody @Validated Order order, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			// TODO: Implement
+		}
+		else {
+			orderDao.update(customerId, order);
+		}
 	}
 
 }
