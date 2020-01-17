@@ -1,16 +1,12 @@
 package com.tcoveney.springrestservice.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,6 +14,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "customers")
 public class Customer {
+	// NOTE: MySQL child 'orders' table configured for CASCADE DELETE when parent 'customers' record deleted
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
@@ -48,21 +45,7 @@ public class Customer {
 	@Column(name = "updated_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedAt;
-	
-	// REFERENCE: https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Order> orders = new ArrayList<>();
-	
-	public void addOrder(Order order) {
-		orders.add(order);
-		order.setCustomer(this);
-	}
-	
-	public void removeOrder(Order order) {
-		orders.remove(order);
-		order.setCustomer(null);
-	}
-	
+		
 	public Integer getId() {
 		return id;
 	}
@@ -157,10 +140,6 @@ public class Customer {
 	
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-	
-	public List<Order> getOrders() {
-		return orders;
 	}
 
 	@Override

@@ -48,16 +48,16 @@ public class OrderDaoHibernateImpl implements OrderDao {
 	}
 
 	@Override
-	public Order update(int customerId, Order order) {
+	public void update(Order order) {
 		Session session = sessionFactory.getCurrentSession();
 		// Lazy loaded Customer parent is currently NULL
 		// TODO: Move parentReference and setter calls to controller.  Remove customerId from method parameter list.  
-		Customer parentReference = new Customer();
-		parentReference.setId(customerId);
-		order.setCustomer(parentReference);
+//		Customer parentReference = new Customer();
+//		parentReference.setId(customerId);
+//		order.setCustomer(parentReference);
 		order.setUpdatedAt(new Date());
 		
-		return (Order)session.merge(order);
+		session.update(order);
 	}
 
 	@Override

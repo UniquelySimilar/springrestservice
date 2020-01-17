@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.javafaker.Faker;
 import com.tcoveney.springrestservice.dao.CustomerDao;
 import com.tcoveney.springrestservice.model.Customer;
+import com.tcoveney.springrestservice.model.CustomerWithOrders;
 import com.tcoveney.springrestservice.validator.CustomerValidator;
 
 @RestController
@@ -71,6 +72,12 @@ public class CustomerController {
 	@GetMapping("/lastname/{lastName}")
 	public List<Customer> findByLastName(@PathVariable String lastName) {
 		return customerDao.findByLastName(lastName);
+	}
+	
+	@GetMapping("/{customerId}/orders")
+	public CustomerWithOrders findWithOrders(@PathVariable int customerId){
+		// TODO: Implement
+		return null;
 	}
 	
 	@PostMapping("/")

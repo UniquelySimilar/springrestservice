@@ -37,10 +37,10 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 	public Customer find(int id) {
 		Session session = sessionFactory.getCurrentSession();
 		// Get customer and associated orders (lazy loaded) with one query
-		String hql = "from Customer as customer left outer join fetch customer.orders where customer.id = :id";
-		Customer customer = (Customer)session.createQuery(hql).setParameter("id", id).getSingleResult();
+//		String hql = "from Customer as customer left outer join fetch customer.orders where customer.id = :id";
+//		Customer customer = (Customer)session.createQuery(hql).setParameter("id", id).getSingleResult();
 		
-		return customer;
+		return (Customer)session.get(Customer.class, id);
 	}
 
 	@Override
@@ -60,12 +60,13 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 	}
 
 	@Override
-	public Customer update(Customer customer) {
+	public void update(Customer customer) {
 		Session session = sessionFactory.getCurrentSession();
 		
 		customer.setUpdatedAt(new Date());
-		
-		return (Customer)session.merge(customer);
+		// NOTE: When using 'merge()' instead of 'update()', if record with this customer.id did not exist,
+		// a new record was created, which is NOT what I want here.
+		session.update(customer);
 	}
 
 	@Override

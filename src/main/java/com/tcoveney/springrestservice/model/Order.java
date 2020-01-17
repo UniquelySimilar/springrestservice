@@ -24,10 +24,15 @@ public class Order {
 	private Integer id;
 
 	// REFERENCE: https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
-	@JsonIgnore	// Eliminates infinite recursion error during Jackson serialization
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "customer_id", nullable = false)
-	private Customer customer;
+	// TODO: Determine if this is still needed after removing the @OneToMany association in Customer.java
+	//@JsonIgnore	// Eliminates infinite recursion error during Jackson serialization
+	// TODO: Determine if I am gaining anything with this @ManyToOne JPA association
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@JoinColumn(name = "customer_id", nullable = false)
+//	private Customer customer;
+	
+	@Column(name = "customer_id", updatable=false)
+	private Integer customerId;
 	
 	@Column(name = "order_status")
 	private int orderStatus;
@@ -49,25 +54,32 @@ public class Order {
 	@Temporal(TemporalType.TIMESTAMP)
 	private java.util.Date updatedAt;
 	
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (!(object instanceof Order )) return false;
-        return id != null && id.equals(((Order) object).getId());
-    }
- 
-    @Override
-    public int hashCode() {
-        return 31;
-    }
+//    @Override
+//    public boolean equals(Object object) {
+//        if (this == object) return true;
+//        if (!(object instanceof Order )) return false;
+//        return id != null && id.equals(((Order) object).getId());
+//    }
+// 
+//    @Override
+//    public int hashCode() {
+//        return 31;
+//    }
 
-	
-	public Customer getCustomer() {
-		return customer;
+//	public Customer getCustomer() {
+//		return customer;
+//	}
+//	
+//	public void setCustomer(Customer customer) {
+//		this.customer = customer;
+//	}
+
+	public Integer getCustomerId() {
+		return customerId;
 	}
 	
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
 	}
 
 	public Integer getId() {
@@ -128,17 +140,9 @@ public class Order {
 
 	@Override
 	public String toString() {
-		String retVal = "Order [id=" + id + ", orderStatus=" + orderStatus + ", orderDate=" + orderDate 
+		return "Order [id=" + id + ", customerId=" + customerId + ", orderStatus=" + orderStatus + ", orderDate=" + orderDate 
 				+ ", requiredDate=" + requiredDate + ", shippedDate=" + shippedDate + ", createdAt="
 				+ createdAt + ", updatedAt=" + updatedAt + "]";
-		if (null != null) {
-			retVal += " *** " + customer.toString();
-		}
-		else {
-			retVal += " *** " + " customer property is NULL";
-		}
-		
-		return retVal;
 	}
 
 }

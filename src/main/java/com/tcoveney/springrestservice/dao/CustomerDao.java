@@ -9,6 +9,6 @@ public interface CustomerDao {
 	public Customer find(int id);
 	public List<Customer> findByLastName(String lastName);
 	public int insert(Customer customer);
-	public Customer update(Customer customer);
+	public void update(Customer customer);
 	public void delete(int id);
 }

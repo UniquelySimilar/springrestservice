@@ -59,21 +59,22 @@ public class OrderController {
 			// TODO: Implement
 		}
 		else {
-			Customer customer = customerDao.find(customerId);
-			customer.addOrder(order);
-			customerDao.update(customer);
-			response.setStatus(201);
+			// TODO: Reimplement
+//			Customer customer = customerDao.find(customerId);
+//			customer.addOrder(order);
+//			customerDao.update(customer);
+//			response.setStatus(201);
 			//response.addHeader( "Location", request.getRequestURL().append( Integer.toString(newOrderId) ).toString() );
 		}
 	}
 	
-	@PutMapping("/customers/{customerId}/orders")
+	@PutMapping("/orders")
 	public void update(@PathVariable int customerId, @RequestBody @Validated Order order, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			// TODO: Implement
 		}
 		else {
-			orderDao.update(customerId, order);
+			orderDao.update(order);
 		}
 	}
 
