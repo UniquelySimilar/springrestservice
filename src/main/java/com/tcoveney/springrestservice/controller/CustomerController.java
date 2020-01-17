@@ -33,8 +33,10 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.javafaker.Faker;
 import com.tcoveney.springrestservice.dao.CustomerDao;
+import com.tcoveney.springrestservice.dao.OrderDao;
 import com.tcoveney.springrestservice.model.Customer;
 import com.tcoveney.springrestservice.model.CustomerWithOrders;
+import com.tcoveney.springrestservice.model.Order;
 import com.tcoveney.springrestservice.validator.CustomerValidator;
 
 @RestController
@@ -50,6 +52,9 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerDao customerDao;
+	
+	@Autowired
+	private OrderDao orderDao;
 
 	@InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -57,7 +62,7 @@ public class CustomerController {
     }
 	
 	@GetMapping("/")
-	public List<Customer> index() {
+	public List<Customer> findAll() {
 		
 		List<Customer> customers = customerDao.findAll();
 		
@@ -65,7 +70,7 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/{id}")
-	public Customer show(@PathVariable int id) {
+	public Customer find(@PathVariable int id) {
 		return customerDao.find(id);
 	}
 	
@@ -76,12 +81,16 @@ public class CustomerController {
 	
 	@GetMapping("/{customerId}/orders")
 	public CustomerWithOrders findWithOrders(@PathVariable int customerId){
-		// TODO: Implement
-		return null;
+		CustomerWithOrders cwo = new CustomerWithOrders();
+		Customer customer = customerDao.find(customerId);
+		List<Order> orders = orderDao.findByCustomer(customerId);
+		cwo.setCustomer(customer);
+		cwo.setOrders(orders);
+		return cwo;
 	}
 	
 	@PostMapping("/")
-	public void store(@RequestBody @Validated Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+	public void insert(@RequestBody @Validated Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {
 			processValidationErrors(bindingResult, response);
 		}

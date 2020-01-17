@@ -29,41 +29,38 @@ public class OrderDaoHibernateImpl implements OrderDao {
 	@SuppressWarnings("unchecked")
 	public List<Order> findAll() {
 		Session session = sessionFactory.getCurrentSession();
-		
 		return session.createQuery("from Order").list();
 	}
 
 	@Override
 	public Order find(int id) {
 		Session session = sessionFactory.getCurrentSession();
-		
 		return session.get(Order.class, id);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Order> findByCustomer(int customerId) {
+		Session session = sessionFactory.getCurrentSession();
+		return session.createQuery("from Order where customerId = :customerId").setParameter("customerId", customerId).list();
 	}
 
 	@Override
 	public int insert(Order order) {
 		Session session = sessionFactory.getCurrentSession();
-		
 		return (Integer)session.save(order);
 	}
 
 	@Override
 	public void update(Order order) {
 		Session session = sessionFactory.getCurrentSession();
-		// Lazy loaded Customer parent is currently NULL
-		// TODO: Move parentReference and setter calls to controller.  Remove customerId from method parameter list.  
-//		Customer parentReference = new Customer();
-//		parentReference.setId(customerId);
-//		order.setCustomer(parentReference);
 		order.setUpdatedAt(new Date());
-		
 		session.update(order);
 	}
 
 	@Override
 	public void delete(int id) {
 		Session session = sessionFactory.getCurrentSession();
-		
 		Order order = new Order();
 		order.setId(id);
 		session.delete(order);

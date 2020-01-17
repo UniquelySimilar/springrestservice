@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tcoveney.springrestservice.dao.CustomerDao;
 import com.tcoveney.springrestservice.dao.OrderDao;
-import com.tcoveney.springrestservice.model.Customer;
 import com.tcoveney.springrestservice.model.Order;
 
 @RestController
@@ -39,9 +38,6 @@ public class OrderController {
 	@Autowired
 	private OrderDao orderDao;
 	
-	@Autowired
-	private CustomerDao customerDao;
-	
 	// TODO: Create OrderValidator or use JSR-303 annotations in model
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -49,33 +45,36 @@ public class OrderController {
 	}
 	
 	@GetMapping("/orders/{id}")
-	public Order show(@PathVariable int id) {
+	public Order find(@PathVariable int id) {
 		return orderDao.find(id);
 	}
 	
 	@PostMapping("/customers/{customerId}/orders")
-	public void store(@PathVariable int customerId, @RequestBody @Validated Order order, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+	public void insert(@PathVariable int customerId, @RequestBody @Validated Order order, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {
 			// TODO: Implement
 		}
 		else {
-			// TODO: Reimplement
-//			Customer customer = customerDao.find(customerId);
-//			customer.addOrder(order);
-//			customerDao.update(customer);
-//			response.setStatus(201);
+			order.setCustomerId(customerId);
+			orderDao.insert(order);
+			response.setStatus(201);
 			//response.addHeader( "Location", request.getRequestURL().append( Integer.toString(newOrderId) ).toString() );
 		}
 	}
 	
 	@PutMapping("/orders")
-	public void update(@PathVariable int customerId, @RequestBody @Validated Order order, BindingResult bindingResult) {
+	public void update(@RequestBody @Validated Order order, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			// TODO: Implement
 		}
 		else {
 			orderDao.update(order);
 		}
+	}
+	
+	@DeleteMapping("/orders/{id}")
+	public void delete(@PathVariable int id) {
+		orderDao.delete(id);
 	}
 
 }
