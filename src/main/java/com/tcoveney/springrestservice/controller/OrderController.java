@@ -25,7 +25,7 @@ import com.tcoveney.springrestservice.dao.OrderDao;
 import com.tcoveney.springrestservice.model.Order;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/orders")
 // "http://localhost:9000" - vue cli dev server
 // "http://vue-client-for-spring-rest.localhost" - Apache2 virtualhost for vue client
 @CrossOrigin(origins = {"http://localhost:9000", "http://vue-client-for-spring-rest.localhost"})
@@ -44,18 +44,17 @@ public class OrderController {
 		//binder.addValidators(new OrderValidator());
 	}
 	
-	@GetMapping("/orders/{id}")
+	@GetMapping("/{id}")
 	public Order find(@PathVariable int id) {
 		return orderDao.find(id);
 	}
 	
-	@PostMapping("/customers/{customerId}/orders")
-	public void insert(@PathVariable int customerId, @RequestBody @Validated Order order, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+	@PostMapping("/")
+	public void insert(@RequestBody @Validated Order order, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {
 			// TODO: Implement
 		}
 		else {
-			order.setCustomerId(customerId);
 			orderDao.insert(order);
 			response.setStatus(201);
 			//response.addHeader( "Location", request.getRequestURL().append( Integer.toString(newOrderId) ).toString() );

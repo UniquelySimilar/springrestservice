@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.javafaker.Faker;
 import com.tcoveney.springrestservice.dao.CustomerDao;
 import com.tcoveney.springrestservice.dao.OrderDao;
+import com.tcoveney.springrestservice.exception.ResourceNotFoundException;
 import com.tcoveney.springrestservice.model.Customer;
 import com.tcoveney.springrestservice.model.CustomerWithOrders;
 import com.tcoveney.springrestservice.model.Order;
@@ -71,7 +72,11 @@ public class CustomerController {
 	
 	@GetMapping("/{id}")
 	public Customer find(@PathVariable int id) {
-		return customerDao.find(id);
+		Customer customer = customerDao.find(id);
+		if (null == customer) {
+			throw new ResourceNotFoundException();
+		}
+		return customer;
 	}
 	
 	@GetMapping("/lastname/{lastName}")
@@ -80,12 +85,17 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/{customerId}/orders")
-	public CustomerWithOrders findWithOrders(@PathVariable int customerId){
+	public CustomerWithOrders findWithOrders(@PathVariable int customerId, HttpServletResponse response){
 		CustomerWithOrders cwo = new CustomerWithOrders();
 		Customer customer = customerDao.find(customerId);
-		List<Order> orders = orderDao.findByCustomer(customerId);
-		cwo.setCustomer(customer);
-		cwo.setOrders(orders);
+		if (null == customer) {
+			throw new ResourceNotFoundException();
+		}
+		else {
+			List<Order> orders = orderDao.findByCustomer(customerId);
+			cwo.setCustomer(customer);
+			cwo.setOrders(orders);
+		}
 		return cwo;
 	}
 	
