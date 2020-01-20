@@ -31,7 +31,7 @@ public class Order {
 //	@JoinColumn(name = "customer_id", nullable = false)
 //	private Customer customer;
 	
-	@Column(name = "customer_id", updatable=false)
+	@Column(name = "customer_id", nullable=false, updatable=false)
 	private Integer customerId;
 	
 	@Column(name = "order_status")

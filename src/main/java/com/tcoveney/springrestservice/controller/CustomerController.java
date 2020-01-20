@@ -48,6 +48,7 @@ public class CustomerController {
 	@Autowired
 	private OrderDao orderDao;
 
+	// TODO: Replace validators with Hibernate validation annotations on model
 	@InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(new CustomerValidator());

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcoveney.springrestservice.dao.OrderDao;
+import com.tcoveney.springrestservice.exception.ResourceNotFoundException;
 import com.tcoveney.springrestservice.model.Order;
 import com.tcoveney.springrestservice.validator.ValidationUtils;
 
@@ -47,11 +48,17 @@ public class OrderController {
 	
 	@GetMapping("/{id}")
 	public Order find(@PathVariable int id) {
-		return orderDao.find(id);
+		Order order = orderDao.find(id);
+		if (null == order) {
+			throw new ResourceNotFoundException();
+		}
+		return order;
 	}
 	
 	@PostMapping("/")
 	public void insert(@RequestBody @Validated Order order, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+		//logger.debug(order.toString());
+		// NOTE: Since Order.customerID is NOT nullable and NOT updatable, it is ignored by this update
 		if (bindingResult.hasErrors()) {
 			// TODO: Implement
 		}
@@ -62,8 +69,9 @@ public class OrderController {
 		}
 	}
 	
-	@PutMapping("/orders")
+	@PutMapping("/")
 	public void update(@RequestBody @Validated Order order, BindingResult bindingResult) {
+		//logger.debug(order.toString());
 		if (bindingResult.hasErrors()) {
 			// TODO: Implement
 		}
@@ -72,7 +80,7 @@ public class OrderController {
 		}
 	}
 	
-	@DeleteMapping("/orders/{id}")
+	@DeleteMapping("/{id}")
 	public void delete(@PathVariable int id) {
 		orderDao.delete(id);
 	}
