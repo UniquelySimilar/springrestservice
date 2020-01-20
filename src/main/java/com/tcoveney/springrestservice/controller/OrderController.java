@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tcoveney.springrestservice.dao.OrderDao;
 import com.tcoveney.springrestservice.model.Order;
+import com.tcoveney.springrestservice.validator.ValidationUtils;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -33,7 +34,7 @@ public class OrderController {
 	private static final Logger logger = LogManager.getLogger(OrderController.class);
 	
 	@Autowired
-	private MessageSource messageSource;
+	private ValidationUtils validationUtils;
 	
 	@Autowired
 	private OrderDao orderDao;
