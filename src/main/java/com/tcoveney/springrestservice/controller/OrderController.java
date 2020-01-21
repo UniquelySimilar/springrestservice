@@ -2,13 +2,12 @@ package com.tcoveney.springrestservice.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,12 +39,6 @@ public class OrderController {
 	@Autowired
 	private OrderDao orderDao;
 	
-	// TODO: Create OrderValidator or use JSR-303 annotations in model
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		//binder.addValidators(new OrderValidator());
-	}
-	
 	@GetMapping("/{id}")
 	public Order find(@PathVariable int id) {
 		Order order = orderDao.find(id);
@@ -56,11 +49,11 @@ public class OrderController {
 	}
 	
 	@PostMapping("/")
-	public void insert(@RequestBody @Validated Order order, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+	public void insert(@RequestBody @Valid Order order, BindingResult bindingResult, HttpServletResponse response) {
 		//logger.debug(order.toString());
 		// NOTE: Since Order.customerID is NOT nullable and NOT updatable, it is ignored by this update
 		if (bindingResult.hasErrors()) {
-			// TODO: Implement
+			validationUtils.createValidationErrorsResponse(bindingResult, response);
 		}
 		else {
 			orderDao.insert(order);
@@ -70,10 +63,10 @@ public class OrderController {
 	}
 	
 	@PutMapping("/")
-	public void update(@RequestBody @Validated Order order, BindingResult bindingResult) {
+	public void update(@RequestBody @Valid Order order, BindingResult bindingResult, HttpServletResponse response) {
 		//logger.debug(order.toString());
 		if (bindingResult.hasErrors()) {
-			// TODO: Implement
+			validationUtils.createValidationErrorsResponse(bindingResult, response);
 		}
 		else {
 			orderDao.update(order);
