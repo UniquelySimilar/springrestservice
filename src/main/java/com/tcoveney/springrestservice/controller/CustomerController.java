@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,12 +49,6 @@ public class CustomerController {
 	@Autowired
 	private OrderDao orderDao;
 
-	// TODO: Replace validators with Hibernate validation annotations on model
-	@InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(new CustomerValidator());
-    }
-	
 	@GetMapping("/")
 	public List<Customer> findAll() {
 		
@@ -92,7 +87,7 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/")
-	public void insert(@RequestBody @Validated Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+	public void insert(@RequestBody @Valid Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {
 			validationUtils.createValidationErrorsResponse(bindingResult, response);
 		}
@@ -104,7 +99,7 @@ public class CustomerController {
 	}
 	
 	@PutMapping("/")
-	public void update(@RequestBody @Validated Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+	public void update(@RequestBody @Valid Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {
 			validationUtils.createValidationErrorsResponse(bindingResult, response);
 		}

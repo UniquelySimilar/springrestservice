@@ -10,6 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Pattern.List;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "customers")
@@ -20,22 +26,39 @@ public class Customer {
 	private Integer id;
 	
 	@Column(name = "first_name")
+	@Size( min = 1,max = 30)
 	private String firstName;
 	
 	@Column(name = "last_name")
+	@Size( min = 1,max = 30)
 	private String lastName;
-
+	
+	@NotBlank
 	private String street;
+	
+	@NotBlank
 	private String city;
+	
+	@NotBlank
 	private String state;
+	
+	@Pattern(regexp = "^[0-9]{5}(?:-[0-9]{4})?$")
 	private String zipcode;
 
 	@Column(name = "home_phone")
+	@Pattern(regexp = "\\d{3}\\-\\d{3}\\-\\d{4}")	// Accept only format nnn-nnn-nnnn
+	//@Pattern(regexp = "\\d{10}|\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}|\\(\\d{3}\\)\\d{3}-\\d{4}")	// Test all three patterns
+	//validate phone numbers of format "1234567890": regexp = "\\d{10}"
+	//validating phone number with -, . or spaces: regexp = "\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}"
+	//validating phone number where area code is in braces (): regexp = "\\(\\d{3}\\)\\d{3}-\\d{4}"
 	private String homePhone;
-	
+
+	// TODO: Use above @Pattern OR'd with empty pattern since not required
 	@Column(name = "work_phone")
+	@Pattern(regexp = "^$|\\d{3}\\-\\d{3}\\-\\d{4}")	// Accept only format nnn-nnn-nnnn
 	private String workPhone;
 	
+	@Email()
 	private String email;
 	
 	@Column(name = "created_at", updatable = false)

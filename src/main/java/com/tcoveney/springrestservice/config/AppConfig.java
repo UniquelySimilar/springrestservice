@@ -18,6 +18,8 @@ import org.springframework.jndi.JndiTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -61,7 +63,14 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	    messageSource.setDefaultEncoding("UTF-8");
 	    return messageSource;
 	}
-	
+
+//	@Override
+//	public Validator getValidator() {
+//		LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+//		validator.setValidationMessageSource(messageSource());
+//		return validator;
+//	}
+
     /* Here we register the Hibernate5Module into an ObjectMapper, then set this custom-configured ObjectMapper
      * to the MessageConverter and return it to be added to the HttpMessageConverters of our application*/
     public MappingJackson2HttpMessageConverter jacksonMessageConverter(){

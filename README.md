@@ -3,8 +3,8 @@
 * **REST API web service built with Spring MVC framework using Java configuration**
 * **Maven project developed using the Eclipse IDE**
 * **Hibernate ORM**
+* **Hibernate Validation using annotations**
 * **Spring transaction management**
 * **MySQL Database**
 * **Full CRUD functionality for Customer model**
-* **IN PROGRESS**
-	* **Full CRUD functionality for Order model as child of Customer model**
+* **Full CRUD functionality for Order model as child of Customer model**
