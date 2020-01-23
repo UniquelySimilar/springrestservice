@@ -35,7 +35,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Bean(destroyMethod="")
 	DataSource dataSource() throws NamingException {
 		JndiTemplate jndiTemplate = new JndiTemplate();
-		return (DataSource)jndiTemplate.lookup("java:comp/env/jdbc/SpringMvcWebAppDB");
+		return (DataSource)jndiTemplate.lookup("java:comp/env/jdbc/springrestservice");
 	}
 	
 	@Bean

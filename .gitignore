@@ -1,2 +1,3 @@
 target/
 springrestservice-notes.txt
+src/main/webapp/META-INF/context.xml
