@@ -86,7 +86,7 @@ public class CustomerController {
 		return cwo;
 	}
 	
-	@PostMapping("/")
+	@PostMapping(value = "/", headers = "content-type=application/json")
 	public void insert(@RequestBody @Valid Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {
 			validationUtils.createValidationErrorsResponse(bindingResult, response);
@@ -98,7 +98,7 @@ public class CustomerController {
 		}
 	}
 	
-	@PutMapping("/")
+	@PutMapping(value = "/", headers = "content-type=application/json")
 	public void update(@RequestBody @Valid Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {
 			validationUtils.createValidationErrorsResponse(bindingResult, response);

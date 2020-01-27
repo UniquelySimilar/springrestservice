@@ -48,7 +48,7 @@ public class OrderController {
 		return order;
 	}
 	
-	@PostMapping("/")
+	@PostMapping(value = "/", headers = "content-type=application/json")
 	public void insert(@RequestBody @Valid Order order, BindingResult bindingResult, HttpServletResponse response) {
 		//logger.debug(order.toString());
 		// NOTE: Since Order.customerID is NOT nullable and NOT updatable, it is ignored by this update
@@ -62,7 +62,7 @@ public class OrderController {
 		}
 	}
 	
-	@PutMapping("/")
+	@PutMapping(value = "/", headers = "content-type=application/json")
 	public void update(@RequestBody @Valid Order order, BindingResult bindingResult, HttpServletResponse response) {
 		//logger.debug(order.toString());
 		if (bindingResult.hasErrors()) {
