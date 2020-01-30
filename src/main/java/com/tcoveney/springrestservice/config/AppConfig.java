@@ -18,12 +18,9 @@ import org.springframework.jndi.JndiTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.validation.Validator;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
@@ -31,7 +28,7 @@ import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 @EnableTransactionManagement
 @EnableWebMvc
 @ComponentScan(basePackages = "com.tcoveney")
-public class AppConfig extends WebMvcConfigurerAdapter {
+public class AppConfig implements WebMvcConfigurer {
 	@Bean(destroyMethod="")
 	DataSource dataSource() throws NamingException {
 		JndiTemplate jndiTemplate = new JndiTemplate();
@@ -64,13 +61,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	    return messageSource;
 	}
 
-//	@Override
-//	public Validator getValidator() {
-//		LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
-//		validator.setValidationMessageSource(messageSource());
-//		return validator;
-//	}
-
     /* Here we register the Hibernate5Module into an ObjectMapper, then set this custom-configured ObjectMapper
      * to the MessageConverter and return it to be added to the HttpMessageConverters of our application*/
     public MappingJackson2HttpMessageConverter jacksonMessageConverter(){
@@ -86,10 +76,9 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         //Here we add our custom-configured HttpMessageConverter
         converters.add(jacksonMessageConverter());
-        super.configureMessageConverters(converters);
     }
 
 }
