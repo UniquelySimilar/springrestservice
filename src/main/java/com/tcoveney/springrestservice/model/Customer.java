@@ -58,6 +58,7 @@ public class Customer {
 	@Pattern(regexp = "^$|\\d{3}\\-\\d{3}\\-\\d{4}")	// Accept only format nnn-nnn-nnnn
 	private String workPhone;
 	
+	@NotBlank
 	@Email()
 	private String email;
 	
