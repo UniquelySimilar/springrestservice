@@ -40,9 +40,17 @@ public class AppConfig implements WebMvcConfigurer {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
 		sessionFactory.setConfigLocation(new ClassPathResource("hibernate.cfg.xml"));
-		Properties hibernateProperties = new Properties();
-		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+		sessionFactory.setHibernateProperties(hibernateProperties());
 		return sessionFactory;
+	}
+	
+	@SuppressWarnings("serial")
+	Properties hibernateProperties() {
+		return new Properties() {
+			{
+				setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+			}
+		};
 	}
 	
 	@Bean
