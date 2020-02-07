@@ -33,6 +33,13 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public List<Customer> findAllOrderByLastName() {
+		Session session = sessionFactory.getCurrentSession();
+		return session.createQuery("from Customer order by lastName").list();
+	}
+
+	@Override
 	public Customer find(int id) {
 		Session session = sessionFactory.getCurrentSession();
 		return (Customer)session.get(Customer.class, id);

@@ -56,6 +56,14 @@ public class CustomerController {
 		
 		return customers;	
 	}
+
+	@GetMapping("/orderby/lastname")
+	public List<Customer> findAllOrderByLastName() {
+		
+		List<Customer> customers = customerDao.findAllOrderByLastName();
+		
+		return customers;	
+	}
 	
 	@GetMapping("/{id}")
 	public Customer find(@PathVariable int id) {
