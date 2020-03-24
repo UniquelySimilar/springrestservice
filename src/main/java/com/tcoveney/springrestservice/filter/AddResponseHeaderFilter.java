@@ -11,7 +11,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter("/api/*")
+//@WebFilter("/api/*")
+// TODO: Verify that Spring Security adds this header by default
 public class AddResponseHeaderFilter implements Filter {
 
 	@Override
