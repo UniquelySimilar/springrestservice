@@ -138,7 +138,8 @@
 	</dependencies>
 
 	<build>
-		<finalName>springrestservice</finalName>
+		<!-- Match deployed context name of Spring Boot version so same Insomnia tests can be used -->
+		<finalName>ordersrestapi</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
